@@ -14,6 +14,7 @@ app.register_blueprint(place, url_prefix='/place')
 app.register_blueprint(device, url_prefix='/device')
 app.register_blueprint(room, url_prefix='/room')
 app.register_blueprint(files, url_prefix='/files')
+app.register_blueprint(order,url_prefix='/order' )
 
 if __name__ == "__main__":
     app.run(
