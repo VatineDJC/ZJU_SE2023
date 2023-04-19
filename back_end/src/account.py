@@ -37,6 +37,10 @@ def signUp():
     password = request.values.get('password')
     phone = request.values.get('phoneNumber')
 
+    # username = 'user1'
+    # password = '1'
+    # phone = '111'
+
     print(request.values)
 
     print(username, password, phone)
@@ -62,13 +66,13 @@ def signUp():
         return jsonify({'code': responseCode['telephone_already_exists']})
 
     db_session.add(registry)
+    db_session.flush()
+    ID = ID = registry.ID
     db_session.commit()
 
-    query = db_session.query(User).filter(User.username == registry.username).all()
+    query = db_session.query(User).filter(User.ID == registry.ID).all()
 
-    user = query[0];
-
-    ID = user.ID
+    user = query[0]
 
     db_session.close()
     session['ID'] = user.ID
@@ -105,13 +109,18 @@ def signIn():
         .filter(User.username == username) \
         .filter(User.password == password).all()
 
+    if query:
+        #登录有效,更改用户状态为登录
+        db_session.query(User).filter(User.ID == query[0].ID).update(
+        {'stat': 'online'})
+
     db_session.close()
 
     if not query:
         return jsonify({'code': responseCode['error']})
     else:
         session['ID'] =query[0].ID
-        return jsonify({'code': responseCode['success']})
+        return jsonify({'code': responseCode['success'],'ID' : query[0].ID})
 
 
 @account.route("/logout", methods=["POST"])
@@ -120,6 +129,11 @@ def logOut():
     """
     logout: logout
     """
+
+    db_session = sessionmaker(bind=bs_db)()
+    db_session.query(User).filter(User.ID == session['ID']).update(
+        {'stat': 'offline'})
+
     session.pop("ID")
     return jsonify({'code': responseCode['success']})
 
@@ -164,4 +178,74 @@ def modifyPassword():
     return jsonify({'code': responseCode['success']})
 
 
+@account.route("/searchbyname", methods=["POST"])
+@login_required
+def searchUserByName():
+    """
+    searchUserByName: search by name
 
+    """
+    db_session = sessionmaker(bind=bs_db)()
+
+    username = request.values.get('username')
+
+    # 简单的边界条件 判空
+    if username is None:
+        return jsonify({'code': responseCode['error']})
+    
+    query = db_session.query(User) \
+        .filter(User.username == username).all()
+
+    if not query:
+        return jsonify({'code': responseCode['error']})
+    
+    db_session.close()
+    return jsonify({'state': responseCode['success'],
+                    'id': query[0].ID,
+                    'username': query[0].username,
+                    'phoneNumber': query[0].phoneNumber,
+                    'description':query[0].description})
+
+@account.route("/searchbynid", methods=["POST"])
+@login_required
+def searchUserByID():
+    """
+    searchUserByID: search by id
+
+    """
+    db_session = sessionmaker(bind=bs_db)()
+
+    id = request.values.get('username')
+
+    # 简单的边界条件 判空
+    if id is None:
+        return jsonify({'code': responseCode['error']})
+    
+    query = db_session.query(User) \
+        .filter(User.ID == id).all()
+
+    if not query:
+        return jsonify({'code': responseCode['error']})
+    
+    db_session.close()
+    return jsonify({'state': responseCode['success'],
+                    'id': query[0].ID,
+                    'username': query[0].username,
+                    'phoneNumber': query[0].phoneNumber,
+                    'description':query[0].description})
+
+@account.route("/displayAllUser", methods=["POST"])
+@login_required
+def displayAllUser():
+    db_session = sessionmaker(bind=bs_db)()
+    query = db_session.query(User).all()
+    ret_list = []
+    for user in query:
+        ret_list.append({
+            'id': user.ID,
+            'username': user.username,
+            'phoneNumber': user.phoneNumber,
+            'description': user.description,
+        })
+    return jsonify({'state': responseCode['success'],
+                    'users': dict(enumerate(ret_list))})

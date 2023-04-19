@@ -10,6 +10,10 @@ responseCode = {
             'same_password': 103
         }
     },
+    'register': {
+        'username_already_exists': 104,
+        'password_invalid': 105
+    },
     'place': {
 
     },
