@@ -179,18 +179,18 @@ export default {
       if(this.item_count == 9) break;  
       if(this.item_count <= 4)
       {
-        this.images1[this.item_count-1]['src'] = string(response.data[item].images[0][imageData]);
+        this.images1[this.item_count-1]['src'] = string(response.data[item].images[0]['imageData']);
         this.images1[this.item_count-1]['title'] = response.data[item].name;
         this.images1[this.item_count-1]['info'] = response.data[item].description;
         this.images1[this.item_count-1]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0][imageData]);
+        img = string(response.data[item].images[0]['imageData']);
         this.image1[this.item_count-1] = require(`${img}`);
       }else{
-        this.images2[this.item_count-5]['src'] = string(response.data[item].images[0][imageData]);
+        this.images2[this.item_count-5]['src'] = string(response.data[item].images[0]['imageData']);
         this.images2[this.item_count-5]['title'] = response.data[item].name;
         this.images2[this.item_count-5]['info'] = response.data[item].description;
         this.images2[this.item_count-5]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0][imageData]);
+        img = string(response.data[item].images[0]['imageData']);
         this.image2[this.item_count-5] = require(`${img}`);
       } 
     }
@@ -222,18 +222,18 @@ export default {
       if(this.item_count == 9) break;    
       if(this.item_count <= 4)
       {
-        this.images1[this.item_count-1]['src'] = string(response.data[item].images[0][imageData]);
+        this.images1[this.item_count-1]['src'] = string(response.data[item].images[0]['imageData']);
         this.images1[this.item_count-1]['title'] = response.data[item].name;
         this.images1[this.item_count-1]['info'] = response.data[item].description;
         this.images1[this.item_count-1]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0][imageData]);
+        img = string(response.data[item].images[0]['imageData']);
         this.image1[this.item_count-1] = require(`${img}`);
       }else{
-        this.images2[this.item_count-5]['src'] = string(response.data[item].images[0][imageData]);
+        this.images2[this.item_count-5]['src'] = string(response.data[item].images[0]['imageData']);
         this.images2[this.item_count-5]['title'] = response.data[item].name;
         this.images2[this.item_count-5]['info'] = response.data[item].description;
         this.images2[this.item_count-5]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0][imageData]);
+        img = string(response.data[item].images[0]['imageData']);
         this.image2[this.item_count-5] = require(`${img}`);
       } 
     }
