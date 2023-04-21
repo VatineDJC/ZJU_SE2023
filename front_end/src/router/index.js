@@ -5,12 +5,13 @@ import enrollView from "@/views/EnrollView.vue";
 import loginView from "@/views/LoginView.vue"
 import changepassView from "@/views/ChangePassView.vue"
 import historyOrderView from "@/views/HistoryOrderView.vue"
+import userManageView from "@/views/UserManage.vue"
 
 //创建路由实例
 const loginRoutes = [
     {
         path: "/",
-        redirect: "/history"
+        redirect: "/login"
     },
     {
         path: "/enroll",
@@ -37,6 +38,11 @@ const loginRoutes = [
         path: "/history",
         name: "history",
         component: historyOrderView
+    },
+    {
+        path: "/usermanage",
+        name: "usermanage",
+        component: userManageView
     }
 ]
 //用于在main.js导入的默认配置

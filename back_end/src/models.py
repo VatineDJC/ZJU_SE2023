@@ -1,7 +1,5 @@
 # coding: utf-8
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import DDL
-
 
 db = SQLAlchemy()
 
@@ -15,6 +13,7 @@ class User(db.Model):
     description = db.Column(db.String(511))
     permission = db.Column(db.String(8), nullable=False, default='user')
     stat = db.Column(db.String(8), nullable=False, default='offline')
+    valid = db.Column(db.String(8), nullable=False, default='valid')
 
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -23,6 +22,7 @@ class Order(db.Model):
     itemID = db.Column(db.ForeignKey('items.ID'), nullable=False, index=True)
     userID = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True)
     stat = db.Column(db.String(16), nullable=False, default='progressing')
+    valid = db.Column(db.String(8), nullable=False, default='valid')
 
     item = db.relationship('Item', primaryjoin='Order.itemID == Item.ID', backref='orders')
     user = db.relationship('User', primaryjoin='Order.userID == User.ID', backref='orders')
@@ -30,12 +30,13 @@ class Order(db.Model):
 class Item(db.Model):
     __tablename__ = 'items'
 
-    ID = db.Column(db.Integer,primary_key=True, unique=True)
-    userID = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True,autoincrement=True)
+    ID = db.Column(db.Integer,primary_key=True, unique=True, autoincrement=True)
+    userID = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True)
     stat = db.Column(db.String(8), nullable=False, default='onsale')
     name = db.Column(db.String(63))
     price = db.Column(db.Float)
     description = db.Column(db.String(511))
+    valid = db.Column(db.String(8), nullable=False, default='valid')
 
     user = db.relationship('User', primaryjoin='Item.userID == User.ID', backref='items')
 
@@ -56,6 +57,7 @@ class Comment(db.Model):
     commenterID = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True)
     commentedID = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True)
     content = db.Column(db.String(511))
+    valid = db.Column(db.String(8), nullable=False, default='valid')
 
     order = db.relationship('Order', primaryjoin='Comment.orderID == Order.ID', backref='comments')
     commenter = db.relationship('User', primaryjoin='Comment.commenterID == User.ID', backref='comments')

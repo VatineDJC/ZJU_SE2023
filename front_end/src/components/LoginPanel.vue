@@ -61,13 +61,13 @@ const formLogin = reactive({
 //if login, redirect to /index
 axios({
   method: "post",
-  url: "api/user/check",
+  url: "/api/user/check",
   withCredentials: true,
 })
   .then((response) => {
     console.log(response.data);
     if (response.data.state === 0) {
-      loginRouter.push("/main");
+      loginRouter.push("/usermanage");
     }
   })
   .catch((error) => {
@@ -89,7 +89,7 @@ function login() {
     .then((response) => {
       console.log(response.data);
       if (response.data.code === 0) {
-        loginRouter.push("/main");
+        loginRouter.push("/usermanage");
         alert("登录成功");
       } else {
         alert("用户名或密码错误");

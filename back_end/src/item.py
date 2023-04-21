@@ -9,23 +9,24 @@ from src.util import responseCode, login_required
 item = Blueprint('item', __name__)
 
 @item.route("/create", methods=["POST"])
-#@login_required
+@login_required
 def createItem():
     db_session = sessionmaker(bind=bs_db)()
 
-    # userID = request.values.get('userID')
-    # name = request.values.get('name')
-    # price = request.values.get('price')
-    # description = request.values.get('description')
+    userID = request.values.get('userID')
+    name = request.values.get('name')
+    price = request.values.get('price')
+    description = request.values.get('description')
 
-    userID = 1
-    name = '圆珠笔'
-    price = 10
-    description = '这是一支圆珠笔'
+    # userID = 1
+    # name = '圆珠笔'
+    # price = 10
+    # description = '这是一支圆珠笔'
 
     if userID is None or name is None:
         #参数为空
-        return jsonify({'code': responseCode['error']})
+        db_session.close()
+        return jsonify({'code': responseCode['invalid_args']})
     
     item = Item()
     item.userID = userID
@@ -61,11 +62,14 @@ def searchKey():
     input = request.values.get('input')
 
     if not input:
-        return jsonify({'code': responseCode['error']})
+        db_session.close()
+        return jsonify({'code': responseCode['invalid_args']})
 
     item_query = db_session.query(Item).filter(Item.name.like('%'+input+'%')).all()
     item_list = []
     for item in item_query:
+        if item.valid == 'invalid':
+            continue
         pics = item.pictures
         pic_list = []
         for pic in pics:
@@ -81,6 +85,54 @@ def searchKey():
             'description': item.description,
             'images': dict(enumerate(pic_list))
         })
-    return jsonify({'state': responseCode['success'],
+    return jsonify({'code': responseCode['success'],
                     'data': dict(enumerate(item_list))})
 
+@item.route("/update", methods=["POST"])
+@login_required
+def update():
+    db_session = sessionmaker(bind=bs_db)()
+
+    itemID = request.values.get('itemID')
+    stat = request.values.get('stat')
+    name = request.values.get('name')
+    price = request.values.get('price')
+    description = request.values.get('description')
+
+    query = db_session.query(Item).filter(Item.ID == itemID).all()
+
+    # 被更改的商品ID不存在
+    if not query or query[0].valid == 'invalid':
+        db_session.close()
+        return jsonify({'code': responseCode['error']})
+
+    db_session.query(Item).filter(Item.ID == itemID).update(
+        {'stat': stat,
+         'name': name,
+         'price': price,
+         'description': description})
+    db_session.commit()
+    db_session.close()
+
+    return jsonify({'code': responseCode['success']})
+
+@item.route("/delete", methods=["POST"])
+@login_required
+def delete():
+    db_session = sessionmaker(bind=bs_db)()
+
+    itemID = request.values.get('id')
+
+    query = db_session.query(Item).filter(Item.ID == itemID).all()
+
+    # 被更改的商品ID不存在
+    if not query:
+        db_session.close()
+        return jsonify({'code': responseCode['error']})
+
+    db_session.query(Item).filter(Item.ID == itemID).all().update(
+        {'valid': 'invalid'})
+    db_session.commit()
+    db_session.close()
+
+    return jsonify({'code': responseCode['success']})

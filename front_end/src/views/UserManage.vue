@@ -41,7 +41,7 @@ export default {
   methods: {
     //获取所有用户，不传入参数
     getUsers() {
-      axios.get('/user/displayAllUser')
+      axios.get('/api/user/displayAllUser')
         .then(response => {
           console.log(response.data);
           this.users = [];
@@ -56,7 +56,7 @@ export default {
     //删除某一用户
     deleteUser(id) {
       console.log(id);
-      axios.post('/user/delete', QueryString.stringify(id))
+      axios.post('/api/user/delete', QueryString.stringify(id))
         .then(response => {
           console.log(response.data);
           this.getUsers();
@@ -67,7 +67,7 @@ export default {
     },
     search() {
       if (this.searchId !== '') {
-        axios.get(`/user/searchbyid/${this.searchId}`)
+        axios.get(`/api/user/searchbyid/${this.searchId}`)
           .then(response => {
             console.log(response.data);
             this.users = [];

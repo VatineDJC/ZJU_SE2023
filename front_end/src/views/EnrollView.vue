@@ -107,7 +107,7 @@ function enroll() {
   } else {
     axios({
       method: "post",
-      url: "/api/user/register",
+      url: "/user/register",
       data: qs.stringify({
         username: formInline.user,
         password: formInline.password,
