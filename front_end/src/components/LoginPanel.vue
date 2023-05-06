@@ -56,6 +56,7 @@ const count = ref(0)
 const formLogin = reactive({
   user: "",
   password: "",
+  id: "",
 });
 
 //if login, redirect to /index
@@ -67,7 +68,8 @@ axios({
   .then((response) => {
     console.log(response.data);
     if (response.data.state === 0) {
-      loginRouter.push("/usermanage");
+      localStorage.setItem('userId', response.data.id);
+      loginRouter.push("/historyorder");
     }
   })
   .catch((error) => {
@@ -89,7 +91,8 @@ function login() {
     .then((response) => {
       console.log(response.data);
       if (response.data.code === 0) {
-        loginRouter.push("/home");
+        localStorage.setItem('userId', response.data.id);
+        loginRouter.push("/historyorder");
         alert("登录成功");
       } else {
         alert("用户名或密码错误");

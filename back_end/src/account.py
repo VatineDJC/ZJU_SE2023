@@ -22,7 +22,8 @@ def checkSession():
 
     query = DBsession.query(User).filter(User.ID == ID).all()
     DBsession.close()
-    return jsonify({'code': responseCode['success'], 'username': query[0].username, 'phoneNumber': query[0].phoneNumber})
+    return jsonify({'code': responseCode['success'], 'username': query[0].username,
+                    'phoneNumber': query[0].phoneNumber, 'id':ID})
 
 
 @account.route("/register", methods=["POST"])
@@ -125,7 +126,7 @@ def signIn():
         return jsonify({'code': responseCode['error']})
     else:
         session['ID'] =query[0].ID
-        return jsonify({'code': responseCode['success'],'ID' : query[0].ID})
+        return jsonify({'code': responseCode['success'],'id' : query[0].ID})
 
 
 @account.route("/logout", methods=["POST"])
