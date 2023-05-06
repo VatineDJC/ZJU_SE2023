@@ -215,7 +215,7 @@ def searchUserByName():
                     'phoneNumber': query[0].phoneNumber,
                     'description':query[0].description})
 
-@account.route("/searchbyid", methods=["GET"])
+@account.route("/searchbyid", methods=["POST"])
 @login_required
 def searchUserByID():
     """
@@ -224,12 +224,12 @@ def searchUserByID():
     """
     db_session = sessionmaker(bind=bs_db)()
 
-    id = request.values.get('username')
+    id = request.values.get('id')
 
     # 简单的边界条件 判空
     if id is None:
         db_session.close()
-        return jsonify({'code': responseCode['error']})
+        return jsonify({'code': responseCode['invalid_args']})
     
     query = db_session.query(User) \
         .filter(User.ID == id).all()
@@ -271,13 +271,13 @@ def deleteUser():
 
     userID = request.values.get('id')
 
-    query = db_session.query(User).filter(User.id == userID).all()
+    query = db_session.query(User).filter(User.ID == userID).all()
 
     if not query or query[0].valid == 'invalid':
         db_session.close()
         return jsonify({'code': responseCode['error']})
 
-    db_session.query(User).filter(User.id == userID).update({
+    db_session.query(User).filter(User.ID == userID).update({
         'valid': 'invalid'
     })
 

@@ -121,7 +121,7 @@
  
 <script>
 import axios from "axios"
-import querystring from "querystring"
+import QueryString from 'qs';
 export default {
   name: "home",
   data(){
@@ -142,23 +142,25 @@ export default {
         {src: '../assets/logo.png', title: 'title', info: 'info', price: 'CNY'}
       ],
       image1:[
-        require( '../assets/1.jpeg' ),
-        require( '../assets/2.jpg' ),
-        require( '../assets/3.jpg' ),
-        require( '../assets/logo.png' )
+        null,null,null,null
+        // require( '../assets/1.jpeg' ),
+        // require( '../assets/2.jpg' ),
+        // require( '../assets/3.jpg' ),
+        // require( '../assets/logo.png' )
       ],
       image2:[
-        require( '../assets/1.jpeg' ),
-        require( '../assets/2.jpg' ),
-        require( '../assets/logo.png' ),
-        require( '../assets/logo.png' )
+        null,null,null,null
+        // require( '../assets/1.jpeg' ),
+        // require( '../assets/2.jpg' ),
+        // require( '../assets/logo.png' ),
+        // require( '../assets/logo.png' )
       ]
     }
   },
   methods:{
     search_key(input){ 
-    axios.post("/api/item/search_key", querystring.stringify({ input: input})).then(function (response){
-    console.log(rsponse);
+    axios.post("/api/item/search_key", QueryString.stringify({ input: input})).then(response => {
+    console.log(response);
     this.images1 = [
       {src: '', title: '', info: '', price: ''},
       {src: '', title: '', info: '', price: ''},
@@ -174,24 +176,24 @@ export default {
         this.image1 = [null, null, null, null];
         this.image2 = [null, null, null, null];
     this.item_count = 0;
-    for (var item in response.data){
+    for (var item in response.data.data){
       this.item_count += 1;
-      if(this.item_count == 9) break;  
+      if(this.item_count == 9) break;
       if(this.item_count <= 4)
       {
-        this.images1[this.item_count-1]['src'] = string(response.data[item].images[0]['imageData']);
-        this.images1[this.item_count-1]['title'] = response.data[item].name;
-        this.images1[this.item_count-1]['info'] = response.data[item].description;
-        this.images1[this.item_count-1]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0]['imageData']);
-        this.image1[this.item_count-1] = require(`${img}`);
+        //this.images1[this.item_count-1]['src'] = response.data.data[item].images[0].imageData;
+        this.images1[this.item_count-1]['title'] = response.data.data[item].name;
+        this.images1[this.item_count-1]['info'] = response.data.data[item].description;
+        this.images1[this.item_count-1]['price'] = response.data.data[item].price;
+        //var img = response.data.data[item].images[0].imageData;
+        // this.image1[this.item_count-1] = require(`${img}`);
       }else{
-        this.images2[this.item_count-5]['src'] = string(response.data[item].images[0]['imageData']);
-        this.images2[this.item_count-5]['title'] = response.data[item].name;
-        this.images2[this.item_count-5]['info'] = response.data[item].description;
-        this.images2[this.item_count-5]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0]['imageData']);
-        this.image2[this.item_count-5] = require(`${img}`);
+        //this.images2[this.item_count-5]['src'] = response.data.data[item].images[0].imageData;
+        this.images2[this.item_count-5]['title'] = response.data.data[item].name;
+        this.images2[this.item_count-5]['info'] = response.data.data[item].description;
+        this.images2[this.item_count-5]['price'] = response.data.data[item].price;
+        //var img = response.data.data[item].images[0].imageData;
+        //this.image2[this.item_count-5] = require(`${img}`);
       } 
     }
     }).catch(function (error){
@@ -200,7 +202,7 @@ export default {
   },
 
   search_tag(string){ 
-    axios.post("/api/item/search_tag", querystring.stringify({sting: string})).then(function (response){
+    axios.post("/api/item/search_tag", QueryString.stringify({sting: string})).then(response => {
       console.log(rsponse);
     this.images1 = [
       {src: '', title: '', info: '', price: ''},
@@ -222,18 +224,18 @@ export default {
       if(this.item_count == 9) break;    
       if(this.item_count <= 4)
       {
-        this.images1[this.item_count-1]['src'] = string(response.data[item].images[0]['imageData']);
-        this.images1[this.item_count-1]['title'] = response.data[item].name;
-        this.images1[this.item_count-1]['info'] = response.data[item].description;
-        this.images1[this.item_count-1]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0]['imageData']);
+        this.images1[this.item_count-1]['src'] = string(response.data.data[item].images[0].imageData);
+        this.images1[this.item_count-1]['title'] = response.data.data[item].name;
+        this.images1[this.item_count-1]['info'] = response.data.data[item].description;
+        this.images1[this.item_count-1]['price'] = response.data.data[item].price;
+        img = string(response.data.data[item].images[0].imageData);
         this.image1[this.item_count-1] = require(`${img}`);
       }else{
-        this.images2[this.item_count-5]['src'] = string(response.data[item].images[0]['imageData']);
-        this.images2[this.item_count-5]['title'] = response.data[item].name;
-        this.images2[this.item_count-5]['info'] = response.data[item].description;
-        this.images2[this.item_count-5]['price'] = response.data[item].price;
-        img = string(response.data[item].images[0]['imageData']);
+        this.images2[this.item_count-5]['src'] = string(response.data.data[item].images[0].imageData);
+        this.images2[this.item_count-5]['title'] = response.data.data[item].name;
+        this.images2[this.item_count-5]['info'] = response.data.data[item].description;
+        this.images2[this.item_count-5]['price'] = response.data.data[item].price;
+        img = string(response.data.data[item].images[0].imageData);
         this.image2[this.item_count-5] = require(`${img}`);
       } 
     }

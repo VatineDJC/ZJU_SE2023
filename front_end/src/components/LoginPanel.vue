@@ -89,7 +89,7 @@ function login() {
     .then((response) => {
       console.log(response.data);
       if (response.data.code === 0) {
-        loginRouter.push("/usermanage");
+        loginRouter.push("/home");
         alert("登录成功");
       } else {
         alert("用户名或密码错误");

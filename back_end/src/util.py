@@ -70,6 +70,6 @@ def login_required(function):
         if session.get('ID'):
             return function(*args, **kwargs)
         else:
-            return {"state": responseCode["login_required"]}
+            return {"code": responseCode["login_required"]}
 
     return wrapper

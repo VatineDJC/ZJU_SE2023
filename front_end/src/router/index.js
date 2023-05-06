@@ -6,6 +6,7 @@ import loginView from "@/views/LoginView.vue"
 import changepassView from "@/views/ChangePassView.vue"
 import historyOrderView from "@/views/HistoryOrderView.vue"
 import userManageView from "@/views/UserManage.vue"
+import homeView from "@/views/HomeView.vue"
 
 //创建路由实例
 const loginRoutes = [
@@ -43,6 +44,11 @@ const loginRoutes = [
         path: "/usermanage",
         name: "usermanage",
         component: userManageView
+    },
+    {
+        path: "/home",
+        name: "home",
+        component: homeView
     }
 ]
 //用于在main.js导入的默认配置

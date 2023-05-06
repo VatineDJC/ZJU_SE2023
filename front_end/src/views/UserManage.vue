@@ -8,7 +8,7 @@
     <!-- 用户列表卡片 -->
     <div>
       <el-input v-model="searchId" placeholder="Search by ID" width:70px></el-input>
-      <el-button type="primary" @click="search">Search</el-button>
+      <el-button type="primary" @click="search(searchId)">Search</el-button>
       <el-table :data="users" style="width: 100%">
         <el-table-column prop="id" label="ID"></el-table-column>
         <el-table-column prop="username" label="Name"></el-table-column>
@@ -56,8 +56,12 @@ export default {
     //删除某一用户
     deleteUser(id) {
       console.log(id);
-      axios.post('/api/user/delete', QueryString.stringify(id))
-        .then(response => {
+      axios({
+          method: "post",
+          url: "/api/user/delete",
+          data: QueryString.stringify({ id:  id}),
+          withCredentials: true,
+      }).then(response => {
           console.log(response.data);
           this.getUsers();
         })
@@ -65,15 +69,21 @@ export default {
           console.log(error);
         });
     },
-    search() {
+    search(searchId) {
       if (this.searchId !== '') {
-        axios.get(`/api/user/searchbyid/${this.searchId}`)
-          .then(response => {
+        axios({
+          method: "post",
+          url: "/api/user/searchbyid",
+          data: QueryString.stringify({ id:  searchId}),
+          withCredentials: true,
+        }).then(response => {
             console.log(response.data);
             this.users = [];
-            for (var user in response.data.users) {
-              this.users.push(response.data.users[user]);
-            }
+            this.users.push({ id: response.data.id, username: response.data.username, 
+              phoneNumber: response.data.phoneNumber, description: response.data.description });
+            // for (var user in response.data.users) {
+            //   this.users.push(response.data.users[user]);
+            // }
           })
           .catch(error => {
             console.log(error);
