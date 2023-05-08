@@ -69,6 +69,7 @@ axios({
     console.log(response.data);
     if (response.data.state === 0) {
       localStorage.setItem('userId', response.data.id);
+      localStorage.setItem('userName', response.data.username);
       loginRouter.push("/historyorder");
     }
   })
@@ -92,6 +93,7 @@ function login() {
       console.log(response.data);
       if (response.data.code === 0) {
         localStorage.setItem('userId', response.data.id);
+        localStorage.setItem('userName', formLogin.user);
         loginRouter.push("/historyorder");
         alert("登录成功");
       } else {
