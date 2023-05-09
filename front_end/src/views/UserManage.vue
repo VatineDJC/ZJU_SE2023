@@ -5,7 +5,9 @@
       <el-breadcrumb separator="/" style="padding-left: 10px;padding-bottom: 10px;font-size: 12px">
         <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+        <el-breadcrumb-item>欢迎管理员 {{ username }}</el-breadcrumb-item>
       </el-breadcrumb>
+      <!-- <Navbar /> -->
       <!-- 用户列表卡片 -->
         <div>
           <div class = "container">
@@ -27,19 +29,27 @@
           </div>
         </div>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import QueryString from 'qs';
+import Navbar from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
 export default {
+  components: { Navbar , Footer },
   name: 'UserManage',
   data() {
     return {
       users: [{ id: 1, username: '张三', phoneNumber: 123456, description: '测试样例' }],
-      searchId: ''
+      searchId: '',
+      username:'数据',
     };
+  },
+  mounted(){
+    this.username = localStorage.getItem('userName');
   },
   created() {
     this.getUsers();
@@ -128,7 +138,7 @@ export default {
 
 .login-box{
   border:1px solid #dccfcf;
-  width: 1000px;
+  width: 900px;
   margin:90px auto;
   padding: 35px 80px 15px 35px;
   border-radius: 5px;
