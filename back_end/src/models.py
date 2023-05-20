@@ -44,8 +44,8 @@ class Picture(db.Model):
     __tablename__ = 'pictures'
 
     ID = db.Column(db.Integer,primary_key=True, unique=True,autoincrement=True)
+    path = db.Column(db.String(128), nullable=False, unique=True)
     itemID = db.Column(db.ForeignKey('items.ID'), nullable=False, index=True)
-    imageData = db.Column(db.LargeBinary) # 新增的image列，用于存储二进制数据
 
     item = db.relationship('Item', primaryjoin='Picture.itemID == Item.ID', backref='pictures')
 

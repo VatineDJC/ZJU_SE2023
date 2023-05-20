@@ -74,7 +74,7 @@ def searchKey():
         pic_list = []
         for pic in pics:
             pic_list.append({
-                'imageData': pic.imageData
+                'imagePath': pic.path
             })
         item_list.append({
             'id': item.ID,

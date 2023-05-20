@@ -1,6 +1,6 @@
 from random import randint, random
 from flask import Blueprint, request, jsonify
-from src.models import Device, Room
+from src.models import Picture,Item
 from sqlalchemy.orm import sessionmaker
 from src.database import bs_db
 from src.util import responseCode, login_required
@@ -13,8 +13,10 @@ files = Blueprint('files', __name__)
 
 @files.route('/upload', methods=['POST'])
 def send_file():
+    db_session = sessionmaker(bind=bs_db)()
+
     file = request.files.get('file')
-    # room_id = request.values.get('room_id')
+    itemID = request.values.get('itemID')
     if file is None :
         return jsonify({'state': responseCode['error']})
 
@@ -28,8 +30,21 @@ def send_file():
     file.save(upload_path + str(nowTime) + suffix)
     save_file_name = str(nowTime) + str(nowTime) + suffix
 
+    pic = Picture()
+    pic.path = save_file_name
+    pic.itemID = itemID
 
-    return {'code': responseCode['success'], 'file_name': save_file_name}
+    db_session.add(pic)
+    db_session.flush()  # 刷新会话以获取新记录的主键值
+    ID = pic.ID
+    db_session.commit()
+
+    query = db_session.query(Picture).filter(Picture.ID == ID).all()
+
+    if query:
+        return jsonify({'code': responseCode['success'], 'file_name': save_file_name})
+    else:
+        return jsonify({'code': responseCode['error']})
 
 
 @files.route('/download', methods=['GET', 'POST'])
