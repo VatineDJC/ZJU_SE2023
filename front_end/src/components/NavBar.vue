@@ -3,7 +3,7 @@
       <ul>
         <li><a href="#/home">首页</a></li>
         <li><a href="#/historyorder">历史订单</a></li>
-        <li><a href="#">个人信息</a></li>
+        <li><a href="#/userdetail">个人信息</a></li>
       </ul>
     </div>
   </template>
