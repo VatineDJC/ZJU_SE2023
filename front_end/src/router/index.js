@@ -8,6 +8,7 @@ import historyOrderView from "@/views/HistoryOrderView.vue"
 import userManageView from "@/views/UserManage.vue"
 import homeView from "@/views/HomeView.vue"
 import historyOrder from "@/views/HistoryOrders.vue"
+import userdetailView from "@/views/UserDetail.vue"
 //创建路由实例
 const loginRoutes = [
     {
@@ -49,6 +50,11 @@ const loginRoutes = [
         path: "/usermanage",
         name: "usermanage",
         component: userManageView
+    },
+    {
+        path: "/userdetail",
+        name: "userdetail",
+        component: userdetailView
     },
     {
         path: "/home",
