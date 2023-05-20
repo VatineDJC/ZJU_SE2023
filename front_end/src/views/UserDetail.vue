@@ -14,11 +14,7 @@
                 </el-col>
                 <el-col :span="8">
                     <h3>权限组</h3>
-                    <ul>
-                        <li v-for="group in user.permissionGroups" :key="group.id">
-                            {{ group.name }}
-                        </li>
-                    </ul>
+                    <p>{{ user.permissionGroups }}</p>
                 </el-col>
             </el-row>
         </el-card>
@@ -52,11 +48,7 @@ export default {
                 username: 'JohnDoe',
                 isLoggedIn: true,
                 personalInfo: '用户的个人信息',
-                permissionGroups: [
-                    { id: 1, name: 'Group A' },
-                    { id: 2, name: 'Group B' },
-                    { id: 3, name: 'Group C' }
-                ],
+                permissionGroups: '权限组信息',
                 reviews: [
                     { user: 'user1', content: '评价1', time: '2023-05-20' },
                     { user: 'user2', content: '评价2', time: '2023-05-21' },
@@ -64,6 +56,23 @@ export default {
                 ]
             }
         };
+    },
+    // created() {
+    //     this.getinfo();
+    // },
+    methods: {
+        //获取所有用户，不传入参数
+        getinfo() {
+            axios.get('/api/user/displayAllUser')
+                .then(response => {
+                    console.log(response.data);
+                    this.user = {};
+                    this.user = response.data.user;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
     }
 };
 </script>
