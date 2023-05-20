@@ -57,9 +57,9 @@ export default {
             }
         };
     },
-    created() {
-        this.getinfo();
-    },
+    // created() {
+    //     this.getinfo();
+    // },
     methods: {
         //获取所有用户，不传入参数
         getinfo() {
