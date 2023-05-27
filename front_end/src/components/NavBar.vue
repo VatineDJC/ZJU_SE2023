@@ -5,6 +5,7 @@
         <li><a href="#/historyorder">订单管理</a></li>
         <li><a href="#/item">商品管理</a></li>
         <li><a href="#/chat">消息管理</a></li>
+        <!-- <li><router-link :to="{ path: '/userdetail', query: { userId: 123 } }">个人信息</router-link></li> -->
         <li><a href="#/userdetail">个人信息</a></li>
       </ul>
     </div>

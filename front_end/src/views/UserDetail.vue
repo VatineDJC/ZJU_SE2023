@@ -4,17 +4,17 @@
         <el-card class = "box">
             <el-row>
                 <el-col :span="8">
-                    <h3>UID: {{ user.uid }}</h3>
+                    <h3>ID: {{ user.id }}</h3>
                     <h3>用户名: {{ user.username }}</h3>
                     <h3>登录状态: {{ user.isLoggedIn ? '已登录' : '未登录' }}</h3>
                 </el-col>
                 <el-col :span="8">
                     <h3>个人信息</h3>
-                    <p>{{ user.personalInfo }}</p>
+                    <p>{{ user.description }}</p>
                 </el-col>
                 <el-col :span="8">
-                    <h3>权限组</h3>
-                    <p>{{ user.permissionGroups }}</p>
+                    <h3>电话号码</h3>
+                    <p>{{ user.phoneNumber }}</p>
                 </el-col>
             </el-row>
         </el-card>
@@ -33,6 +33,8 @@
 
 
 <script>
+import axios from 'axios';
+import QueryString from 'qs';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 export default {
@@ -44,11 +46,11 @@ export default {
     data() {
         return {
             user: {
-                uid: '12345',
+                id: 10,
                 username: 'JohnDoe',
                 isLoggedIn: true,
-                personalInfo: '用户的个人信息',
-                permissionGroups: '权限组信息',
+                description: '用户的个人信息',
+                phoneNumber: '电话号码',
                 reviews: [
                     { user: 'user1', content: '评价1', time: '2023-05-20' },
                     { user: 'user2', content: '评价2', time: '2023-05-21' },
@@ -57,22 +59,30 @@ export default {
             }
         };
     },
-    // created() {
-    //     this.getinfo();
-    // },
+    created() {
+        this.getinfo();
+    },
     methods: {
-        //获取所有用户，不传入参数
         getinfo() {
-            axios.get('/api/user/displayAllUser')
-                .then(response => {
+                this.user.username = this.$route.query.username ||localStorage.getItem('userName');
+                this.user.id = this.$route.query.userId || localStorage.getItem('userId');;
+                axios({
+                    method: "post",
+                    url: "/api/user/searchbyid",
+                    data: QueryString.stringify({ id: this.user.id }),
+                    withCredentials: true,
+                }).then(response => {
                     console.log(response.data);
                     this.user = {};
-                    this.user = response.data.user;
+                    this.user={
+                        id: response.data.id, username: response.data.username,isLoggedIn:response.data.isLoggedIn,
+                        phoneNumber: response.data.phoneNumber, description: response.data.description,reviews:response.data.comments
+                    };
                 })
                 .catch(error => {
                     console.log(error);
                 });
-        },
+        }
     }
 };
 </script>
