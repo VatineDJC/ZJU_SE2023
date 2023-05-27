@@ -9,6 +9,7 @@ import userManageView from "@/views/UserManage.vue"
 import homeView from "@/views/HomeView.vue"
 import historyOrder from "@/views/HistoryOrders.vue"
 import userdetailView from "@/views/UserDetail.vue"
+import chat from "@/views/Chat.vue"
 //创建路由实例
 const loginRoutes = [
     {
@@ -64,6 +65,11 @@ const loginRoutes = [
         path: "/home",
         name: "home",
         component: homeView
+    },
+    {
+        path: "/chat",
+        name: "chat",
+        component: chat
     }
 ]
 //用于在main.js导入的默认配置

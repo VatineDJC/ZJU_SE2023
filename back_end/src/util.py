@@ -38,7 +38,8 @@ responseCode = {
     'device_doesnot_exist': 12,
     'bind_error': 13,
     'update_error': 14,
-    'invalid_args': 15
+    'invalid_args': 15,
+    'chat_already_exists': 16,
 }
 
 # responseCode = {
