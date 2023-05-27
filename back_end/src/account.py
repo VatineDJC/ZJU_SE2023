@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, session
 from src.models import User
+from src.models import Comment
 from sqlalchemy.orm import sessionmaker
 from src.database import bs_db
 from src.util import responseCode, login_required, responseCode
@@ -205,6 +206,16 @@ def searchUserByName():
     query = db_session.query(User) \
         .filter(User.username == username).all()
 
+    query_2 = db_session.query(Comment) \
+        .filter(Comment.commentedID == id).all()
+    comments = []
+    for comment in query_2:
+        comments.append({
+            'user':comment.commenterID,
+            'content':comment.content,
+            'time':'2023-05-20'
+            })
+
     if not query or query[0].valid == 'invalid':
         db_session.close()
         return jsonify({'code': responseCode['error']})
@@ -214,7 +225,10 @@ def searchUserByName():
                     'id': query[0].ID,
                     'username': query[0].username,
                     'phoneNumber': query[0].phoneNumber,
-                    'description':query[0].description})
+                    'isLoggedIn': query[0].stat,
+                    'description':query[0].description,
+                    'comments':comments,
+                    })
 
 @account.route("/searchbyid", methods=["POST"])
 @login_required
@@ -234,7 +248,15 @@ def searchUserByID():
     
     query = db_session.query(User) \
         .filter(User.ID == id).all()
-
+    query_2 = db_session.query(Comment) \
+        .filter(Comment.commentedID == id).all()
+    comments = []
+    for comment in query_2:
+        comments.append({
+            'user':comment.commenterID,
+            'content':comment.content,
+            'time':'2023-05-20'
+            })
     if not query or query[0].valid == 'invalid':
         db_session.close()
         return jsonify({'code': responseCode['error']})
@@ -244,7 +266,10 @@ def searchUserByID():
                     'id': query[0].ID,
                     'username': query[0].username,
                     'phoneNumber': query[0].phoneNumber,
-                    'description':query[0].description})
+                    'isLoggedIn': query[0].stat,
+                    'description':query[0].description,
+                    'comments':comments
+                    })
 
 @account.route("/displayAllUser", methods=["GET"])
 @login_required

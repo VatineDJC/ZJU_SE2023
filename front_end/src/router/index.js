@@ -52,6 +52,10 @@ const loginRoutes = [
         component: userManageView
     },
     {
+        path: '/userdetail/:id',
+        component: userdetailView,
+    },
+    {
         path: "/userdetail",
         name: "userdetail",
         component: userdetailView
