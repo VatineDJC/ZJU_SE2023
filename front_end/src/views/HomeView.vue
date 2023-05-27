@@ -2,7 +2,7 @@
   <div class="hello">
  
       <font size="5">  
-      <ul style="text-align: left;"> 
+      <!-- <ul style="text-align: left;"> 
         <li><a href="/home">首页</a></li>  
         <li><a href="#">关于我们</a></li> 
         <li><a href="#">服务项目</a></li>  
@@ -12,7 +12,8 @@
         <li><a href="#">历史</a></li>  
         <li><a href="#">购物车({{ cart_items_number }})</a></li>  
         <li><a href="#">个人中心({{ username }})</a></li>  
-      </div>
+      </div> -->
+      <Navbar />
       </font> 
 
      <br/>
@@ -122,8 +123,12 @@
 <script>
 import axios from "axios"
 import QueryString from 'qs';
+import Navbar from '@/components/Navbar.vue';
 export default {
   name: "home",
+  components: {
+    Navbar
+  },
   data(){
     return{
       cart_items_number: 0,

@@ -1,5 +1,6 @@
 # coding: utf-8
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -62,3 +63,26 @@ class Comment(db.Model):
     order = db.relationship('Order', primaryjoin='Comment.orderID == Order.ID', backref='comments')
     commenter = db.relationship('User', primaryjoin='Comment.commenterID == User.ID', backref='comments')
     commented = db.relationship('User', primaryjoin='Comment.commentedID == User.ID', backref='commented')
+
+class Chat(db.Model):
+    __tablename__ = 'chats'
+
+    ID = db.Column(db.Integer,primary_key=True, unique=True,autoincrement=True)
+    UID1 = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True)
+    UID2 = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True)
+    status = db.Column(db.Integer, default=0)
+
+    chat = db.relationship('User', primaryjoin='Chat.UID1 == User.ID or Chat.UID2 == User.ID', backref='chats')
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+
+    ID = db.Column(db.Integer,primary_key=True, unique=True,autoincrement=True)
+    chatID = db.Column(db.ForeignKey('chats.ID'), nullable=False, index=True)
+    senderUID = db.Column(db.ForeignKey('users.ID'), nullable=False, index=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    text = db.Column(db.String(128))
+
+    user = db.relationship('User', primaryjoin='Message.senderUID == User.ID', backref='messages')
+    chat = db.relationship('Chat', primaryjoin='Message.chatID == Chat.ID', backref='messages')
+

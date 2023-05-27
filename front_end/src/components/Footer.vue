@@ -7,7 +7,6 @@
   <style>
   .footer {
     background-color: #f0f0f0;
-    padding: 20px;
     text-align: center;
   }
   

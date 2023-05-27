@@ -9,12 +9,12 @@ import userManageView from "@/views/UserManage.vue"
 import homeView from "@/views/HomeView.vue"
 import historyOrder from "@/views/HistoryOrders.vue"
 import userdetailView from "@/views/UserDetail.vue"
-import chatView from "@/views/ChatPageView.vue"
+import chat from "@/views/Chat.vue"
 //创建路由实例
 const loginRoutes = [
     {
         path: "/",
-        redirect: "/usermanage"
+        redirect: "/login"
     },
     {
         path: "/enroll",
@@ -65,7 +65,7 @@ const loginRoutes = [
     {
         path: "/chat",
         name: "chat",
-        component: chatView
+        component: chat
     }
 ]
 //用于在main.js导入的默认配置
