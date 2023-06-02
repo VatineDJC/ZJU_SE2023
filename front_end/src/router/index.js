@@ -1,5 +1,5 @@
 //导入方法
-import {createRouter, createWebHashHistory} from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import mainView from "@/views/MainView.vue";
 import enrollView from "@/views/EnrollView.vue";
 import loginView from "@/views/LoginView.vue"
@@ -10,6 +10,8 @@ import homeView from "@/views/HomeView.vue"
 import historyOrder from "@/views/HistoryOrders.vue"
 import userdetailView from "@/views/UserDetail.vue"
 import chat from "@/views/Chat.vue"
+import upload from "@/views/UploadView.vue"
+import edit from "@/views/EditItem.vue"
 //创建路由实例
 const loginRoutes = [
     {
@@ -18,7 +20,7 @@ const loginRoutes = [
     },
     {
         path: "/enroll",
-        name:"enroll",
+        name: "enroll",
         component: enrollView
     },
     {
@@ -31,7 +33,7 @@ const loginRoutes = [
         name: "main",
         component: mainView
     }
-        ,
+    ,
     {
         path: "/changepwd",
         name: "changepwd",
@@ -70,6 +72,16 @@ const loginRoutes = [
         path: "/chat",
         name: "chat",
         component: chat
+    },
+    {
+        path: "/upload",
+        name: "upload",
+        component: upload
+    },
+    {
+        path: "/edit",
+        name: "edit",
+        component: edit
     }
 ]
 //用于在main.js导入的默认配置
